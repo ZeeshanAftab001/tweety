@@ -1,0 +1,39 @@
+{% extends 'basic.html' %}
+{% load static %}
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+{% block title %}
+  home
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div class="row">
+      <div style="width: 300px; height: auto;">
+        <div style="background-color: white; margin-top: 40px; padding:10px; border-radius: 5px;">
+          <div style="padding: 10px;">
+            <div class="row" style="padding-top: 5px;">
+              <div style="margin-left: 60px;">
+                <a href="{% url 'home' %}">
+                  <strong style="color: black;">Home</strong>
+                  <img src="{% static 'home.png' %}" alt="" style="height: 30px; width: 30px;" />
+                </a>
+              </div>
+            </div>
+            <div class="row" style="padding-top: 5px;">
+              <button class="btn btn-primary">Explore</button>
+            </div>
+
+            <div class="row" style="padding-top: 5px;">
+              <button class="btn btn-primary">Update</button>
+            </div>
+            <div class="row" style="padding-top: 5px;">
+              <button class="btn btn-primary">Search</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col" style="background-color: white; border-radius: 5px; margin-top: 40px;">hello</div>
+    </div>
+  </div>
+{% endblock %}

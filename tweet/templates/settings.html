@@ -1,0 +1,32 @@
+{% extends 'basic.html' %}
+
+{% block title %}
+settings
+{% endblock title %}
+
+
+
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center mt-5 py-5 bg-white" style="border-radius: 10px;">
+      <div class="col-md-6 col-lg-4 py-5 text-center" style="background-color: white;padding: 10px;">
+      <div>
+          <a href="{% url "update_credentails" %}">Update Credentials</a>
+      </div>
+      <br>
+      <div>
+          <a href="{% url "update_profile" %}">Upload Profile</a>
+      </div>
+      
+
+      </div>
+      <div class="col-md-6 col-lg-4 py-5" style="background-color: white; border-radius: 5px;">
+
+
+        </div>
+        </div>
+      </div>
+    
+  </div>
+{% endblock body %}

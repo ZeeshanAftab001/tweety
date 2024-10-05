@@ -1,0 +1,36 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block title %}
+settings
+{% endblock title %}
+
+
+{% block body %}
+   
+<div class="container mt-5">
+    <div class="row justify-content-center mt-5 py-5" style="border-radius: 10px; background-color: white;">
+      <div class="col-md-6 col-lg-4 py-5 justify-content-center">
+        <div>
+    <form method="post" enctype="multipart/form-data" action="{% url 'update_profile' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="image" class="form-label">Upload Image</label>
+            <input class="form-control" type="file" id="image" name="image" accept="image/*">
+        </div>
+        <div class="mb-3">
+            <label for="bio" class="form-label">Add Bio</label>
+            <input class="form-control" type="text" id="bio" name="bio">
+        </div>
+        <div class="mb-3">
+            <label for="bio" class="form-label">Change Username</label>
+            <input class="form-control" type="text" id="Username" name="Username">
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+</div>
+</div>
+</div>
+</div>
+    
+
+{% endblock body %}

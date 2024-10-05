@@ -1,0 +1,36 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block title %}
+  settings
+{% endblock %}
+
+
+
+{% block body %}
+  <div class="container mt-5 justify-content-center">
+    <div class="row justify-content-center mt-5 py-5" style="border-radius: 10px; background-color: white;">
+      <div class="col-md-6 col-lg-4 py-5 justify-content-center">
+        <div>
+            <h1>{{profile.user.username}}</h1>
+        </div>
+       
+            <img src="{{ profile.picture.url }}" alt="Profile Picture" class="round-image"  style="width: 200px; height: 200px;border-radius: 50%;
+        object-fit: cover; border-radius: 100px; border-color: gainsboro; border-width: 20px;" >
+       
+
+        <div>
+            
+            <br>
+            <br>
+            <h1>{{profile.user.username}}</h1>
+        </div>
+
+        <div>
+            <p>
+                {{profile.bio}}
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

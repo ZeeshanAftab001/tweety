@@ -1,0 +1,32 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block title %}
+Search
+{% endblock title %}
+
+{% block body %}
+<div class="container justify-content-center">
+    <div class="row justify-content-center mt-5 py-5 bg-white" style="border-radius: 10px;">
+        <div class="col">
+            {% if profiles %}
+                {% for profile in profiles %}
+                    <div class="card mb-3" style="width: 18rem;">
+                        {% if profile.picture %}
+                            <img src="{{ profile.picture.url }}" class="card-img-top" alt="{{ profile.user.username }}">
+                        {% else %}
+                            <img src="{% static 'images/default_profile.png' %}" class="card-img-top" alt="Default Profile">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ profile.user.username }}</h5>
+                            <p class="card-text">{{ profile.bio|default:"No bio available." }}</p>
+                            <a href="{% url 'user_profile' profile.user.id %}" class="btn btn-primary">View Profile</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No profiles found matching your search criteria.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock body %}

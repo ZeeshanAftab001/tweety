@@ -3,6 +3,7 @@ from .models import User,Profile,Tweet
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.utils.functional import SimpleLazyObject
 
 # Create your views here.
@@ -10,7 +11,7 @@ from django.utils.functional import SimpleLazyObject
 @login_required 
 def home(request):
 
-    tweets=Tweet.objects.all()
+    tweets = Tweet.objects.filter(user__profile__in=request.user.profile.follows.all())
     return render(request,'home.html',{"tweets":tweets})
 
 
@@ -112,16 +113,18 @@ def settings(request):
 
 @login_required 
 def search(request):
+    
     if request.method == "POST":
         item = request.POST.get("search")
 
         # Correctly traverse the relationship from Profile to User to filter by username
         profiles = Profile.objects.filter(user__username__icontains=item)
-        if profiles:
+        tweets = Tweet.objects.filter( Q(body__icontains=item) | Q(title__icontains=item))
+        if profiles or tweets:
 
-            return render(request, 'profiles_list.html', {"profiles": profiles})
+            return render(request, 'profiles_list.html', {"profiles": profiles,"tweets":tweets})
         else:
-            messages.error(request,"User Not Found")
+            messages.error(request,"User  or Tweet Not Found")
             return render(request,"home.html")
 
     return render(request, "home.html", {})
@@ -189,3 +192,18 @@ def user_profile(request, id):
         current_profile.save()
 
     return render(request, 'end_user_profile.html', {"profile": profile})
+
+
+def unfollow_user(request,id):
+    user = request.user
+    profile = get_object_or_404(Profile, user__id=id)
+
+    current_profile = request.user.profile
+    if request.method == 'POST':
+        action = request.POST.get('UnFollow')
+
+        if action == 'UnFollow':
+            current_profile.follows.remove(profile)
+        current_profile.save()
+        return redirect("home")
+    return redirect("home")

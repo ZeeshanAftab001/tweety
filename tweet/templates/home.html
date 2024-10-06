@@ -77,14 +77,24 @@
                   <div>
                     <a href="{% url 'edit_tweet_page' tweet.id %}" class="btn btn-primary">Edit</a>
                     <a href="{% url 'delete_tweet' tweet.id %}" class="btn btn-primary">Delete</a>
-                  </div>
-                  <br>
+                  <br />
                 {% endif %}
-
-                <img src="{{ tweet.user.profile.picture.url }}" alt="Profile Picture" class="round-image" style="width: 50px; height: 50px;border-radius: 50%;
+                <div style="margin-left: 230px;">
+                  <form action="{% url 'unfollow_user' tweet.user.id %}" method="post">
+                    {% csrf_token %}
+                    {% if request.user.profile in tweet.user.profile.followed_by.all %}
+                      <button class="btn btn-danger" type="submit" name="UnFollow" value="UnFollow">Unfollow</button>
+                    {% else %}
+                      <button class="btn btn-primary" type="submit" name="Follow" value="Follow">Follow</button>
+                    {% endif %}
+                  </form>
+                </div>
+                {% if tweet.user.profile.picture %}
+                  <img src="{{ tweet.user.profile.picture.url }}" alt="Profile Picture" class="round-image" style="width: 50px; height: 50px;border-radius: 50%;
               object-fit: cover; border-radius: 100px; border-color: gainsboro; border-width: 20px;" />
+                {% endif %}
+                <p class="username"><a href="{% url 'user_profile' tweet.user.id %}">@{{ tweet.user.username }}</a></p>
                 <div style="border: 5px; border-radius: 3px; border-color:black;">
-                  <p class="username">{{ tweet.user.username }}</p>
                   <p class="tweet-time">{{ tweet.creation_time }}</p>
                 </div>
               </div>
@@ -93,7 +103,7 @@
               <p>{{ tweet.body }}</p>
             </div>
           </div>
-          <br>
+          <br />
         {% endfor %}
       </div>
     </div>

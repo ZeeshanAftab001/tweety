@@ -9,7 +9,8 @@
     <div class="row justify-content-center mt-5 py-5" style="border-radius: 10px; background-color: white;">
       <div class="col-md-6 col-lg-4 py-5 justify-content-center">
         {% if profile.picture %}
-          <img src="{{ profile.picture.url }}" class="card-img-top" alt="{{ profile.user.username }}" />
+        <img src="{{ profile.picture.url }}" alt="Profile Picture" class="round-image" style="width: 200px; height: 200px;border-radius: 50%;
+        object-fit: cover; border-radius: 100px; border-color: gainsboro; border-width: 20px; margin-left: 80px;" />
         {% else %}
           <img src="{% static 'images/default_profile.png' %}" class="card-img-top" alt="Default Profile" />
         {% endif %}

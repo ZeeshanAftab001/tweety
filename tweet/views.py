@@ -207,3 +207,16 @@ def unfollow_user(request,id):
         current_profile.save()
         return redirect("home")
     return redirect("home")
+
+@login_required
+def tweet_like(request,id):
+    
+    tweet=get_object_or_404(Tweet,id=id)
+    if tweet.likes.filter(id=request.user.id):
+        tweet.likes.remove(request.user)
+    else:
+        tweet.likes.add(request.user)
+
+    return redirect("home")
+
+

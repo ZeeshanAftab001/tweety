@@ -17,8 +17,11 @@ class Tweet(models.Model):
     user=models.ForeignKey(User,related_name="tweets",on_delete=models.CASCADE)
     title=models.CharField(max_length=200)
     body=models.CharField(max_length=200)
-
     creation_time=models.DateTimeField(auto_now_add=True)
+    likes=models.ManyToManyField(User,related_name="liked" ,blank=True)
+
+    def like_counts(self):
+        return self.likes.count()
 
 
     def __str__(self):

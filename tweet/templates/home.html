@@ -5,7 +5,45 @@
 {% block title %}
   home
 {% endblock %}
-
+<style>
+  .tweet-card {
+    border-radius: 10px;
+    border: 1px solid #e1e8ed;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 20px auto;
+  }
+  .tweet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
+  .user-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  .username {
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+  .tweet-time {
+    font-size: 0.9em;
+    color: #657786;
+  }
+  .tweet-body {
+    margin-top: 15px;
+    font-size: 1.1em;
+  }
+</style>
 {% block body %}
   <div class="container">
     <div class="row">
@@ -13,11 +51,8 @@
         <div style="background-color: white; margin-top: 40px; padding:10px; border-radius: 5px;">
           <div style="padding: 10px;">
             <div class="row" style="padding-top: 5px;">
-              <div style="margin-left: 60px;">
-                <a href="{% url 'home' %}">
-                  <strong style="color: black;">Home</strong>
-                  <img src="{% static 'home.png' %}" alt="" style="height: 30px; width: 30px;" />
-                </a>
+              <div class="row" style="padding-top: 5px;">
+                <button class="btn btn-primary">Home</button>
               </div>
             </div>
             <div class="row" style="padding-top: 5px;">
@@ -33,7 +68,34 @@
           </div>
         </div>
       </div>
-      <div class="col" style="background-color: white; border-radius: 5px; margin-top: 40px;">hello</div>
+      <div class="col" style="background-color: white; border-radius: 5px; margin-top: 40px; padding: 10px;">
+        {% for tweet in tweets %}
+          <div class="tweet-card" style="box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); padding: 10px; ">
+            <div class="tweet-header" style="padding: 5px;">
+              <div class="user-info" style="border: 2px; border-color: gray;">
+                {% if tweet.user == request.user %}
+                  <div>
+                    <a href="{% url 'edit_tweet_page' tweet.id %}" class="btn btn-primary">Edit</a>
+                    <a href="{% url 'delete_tweet' tweet.id %}" class="btn btn-primary">Delete</a>
+                  </div>
+                  <br>
+                {% endif %}
+
+                <img src="{{ tweet.user.profile.picture.url }}" alt="Profile Picture" class="round-image" style="width: 50px; height: 50px;border-radius: 50%;
+              object-fit: cover; border-radius: 100px; border-color: gainsboro; border-width: 20px;" />
+                <div style="border: 5px; border-radius: 3px; border-color:black;">
+                  <p class="username">{{ tweet.user.username }}</p>
+                  <p class="tweet-time">{{ tweet.creation_time }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="tweet-body">
+              <p>{{ tweet.body }}</p>
+            </div>
+          </div>
+          <br>
+        {% endfor %}
+      </div>
     </div>
   </div>
 {% endblock %}

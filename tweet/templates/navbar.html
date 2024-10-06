@@ -32,6 +32,9 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'settings' %}">Settings</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'create_tweet' %}">Create Tweet</a>
+              </li>
             {% endif %}
           </ul>
           <form class="d-flex" role="search" name="search" id="search" method="post" action="{% url 'search' %}">

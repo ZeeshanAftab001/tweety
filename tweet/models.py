@@ -11,3 +11,15 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+class Tweet(models.Model):
+
+    user=models.ForeignKey(User,related_name="tweets",on_delete=models.CASCADE)
+    title=models.CharField(max_length=200)
+    body=models.CharField(max_length=200)
+
+    creation_time=models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return f"{self.user} created {self.body[0:30]} at {self.creation_time}"

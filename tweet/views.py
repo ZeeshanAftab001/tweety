@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import User,Profile
+from .models import User,Profile,Tweet
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -9,7 +9,60 @@ from django.utils.functional import SimpleLazyObject
 
 @login_required 
 def home(request):
+
+    tweets=Tweet.objects.all()
+    return render(request,'home.html',{"tweets":tweets})
+
+
+def create_tweet(request):
+
+    if request.method == "POST":
+
+        title=request.POST.get("title")
+        body=request.POST.get("body")
+
+        tweet=Tweet(user=request.user)
+        if title:
+            tweet.title=title
+        if body:
+            tweet.title=title
+        
+        tweet.body=body
+
+        tweet.save()
+        return redirect("home")
+    return render(request,"create_tweet.html",{})
+
+def edit_tweet(request,id):
+    tweet=get_object_or_404(Tweet,id=id)
+    print(tweet.title)
+    if request.method == "POST":
+        body=request.POST.get("body")
+        title=request.POST.get("title")
+        print(body)
+
+        tweet.title=title
+        tweet.body=body
+
+        tweet.save()
+        messages.success(request,"Tweet Updated")
+        return redirect('home')
+    else:
+        messages.error(request,"Error Occured")
+    
     return render(request,'home.html',{})
+
+def edit_tweet_page(request,id):
+
+    tweet=get_object_or_404(Tweet,id=id)
+    return render(request,"edit_tweet.html",{"tweet":tweet})
+
+def delete_tweet(request,id):
+
+    tweet=get_object_or_404(Tweet,id=id)
+    tweet.delete()
+    return redirect("home")
+    
 
 def signup(request):
 
@@ -118,9 +171,21 @@ def my_profile(request):
     profile=get_object_or_404(Profile,user=user)
     return render(request,"myprofile.html",{"profile":profile})
 
-def user_profile(request,id):
+def user_profile(request, id):
+    user = request.user
+    profile = get_object_or_404(Profile, user__id=id)
 
-    user=request.user
-    profile=get_object_or_404(Profile,user__id=id)
+    # Initialize current_profile before the if-else block
+    current_profile = request.user.profile
 
-    return render(request,'end_user_profile.html',{"profile":profile})
+    if request.method == 'POST':
+        action = request.POST.get('UnFollow')
+
+        if action == 'UnFollow':
+            current_profile.follows.remove(profile)
+        else:
+            current_profile.follows.add(profile)
+        
+        current_profile.save()
+
+    return render(request, 'end_user_profile.html', {"profile": profile})

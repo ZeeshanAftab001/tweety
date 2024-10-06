@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Profile
+from . models import Profile,Tweet
 from django.contrib.auth.models import Group,User
 from django.db.models.signals import post_save
 
@@ -13,7 +13,7 @@ class ProfileInline(admin.StackedInline):
 class UserAdmin(admin.ModelAdmin):
 
     model=User
-    fields=['username']
+    fields=['username','password']
     inlines=[ProfileInline]
 
 # admin.site.register(Profile)
@@ -34,6 +34,9 @@ def create_profile(sender,instance,created,**kwargs):
 
 
 post_save.connect(create_profile,sender=User)
+
+
+admin.site.register(Tweet)
 
 
 
